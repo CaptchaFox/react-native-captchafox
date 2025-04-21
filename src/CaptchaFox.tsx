@@ -133,7 +133,6 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
     const parseMessage = (event: WebViewMessageEvent) => {
       try {
         const data: CaptchaFoxMessage = JSON.parse(event.nativeEvent.data);
-        console.log(data);
         switch (data.type) {
           case 'VERIFY': {
             if (!data.token) {

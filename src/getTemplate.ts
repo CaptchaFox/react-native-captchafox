@@ -72,11 +72,11 @@ export const getTemplate = ({
                   mode: "${mode}",
                   theme: "${theme}",
                   lang: "${lang}",
-                  onFail: onFail,
-                  onClose: onClose,
-                  onExpire: onExpire,
-                  onError: onError,
-                  onVerify: onVerify,
+                  onFail,
+                  onClose,
+                  onExpire,
+                  onError,
+                  onVerify,
                   onChallengeOpen,
                 });
                 window.ReactNativeWebView.postMessage(JSON.stringify({

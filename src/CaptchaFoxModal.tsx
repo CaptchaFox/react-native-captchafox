@@ -31,11 +31,11 @@ export type CaptchaFoxModalProps = Omit<
 > & {
   /** Custom loading indicator. */
   loadingComponent?: ReactNode;
-  /** Custom header. */
+  /** Custom modal header. */
   headerComponent?: ReactNode;
-  /** Custom footer. */
+  /** Custom modal footer. */
   footerComponent?: ReactNode;
-  /** Custom styles for the Modal. */
+  /** Custom modal style. */
   modalStyle?: StyleProp<ViewStyle>;
   /** Color of the modal backdrop. */
   backdropColor?: string;
@@ -133,8 +133,6 @@ export const CaptchaFoxModal = forwardRef<
               setLoading(false);
               setOpen(false);
             }}
-            onFail={onFail}
-            onExpire={onExpire}
             onClose={() => {
               onClose?.();
 
@@ -142,6 +140,8 @@ export const CaptchaFoxModal = forwardRef<
                 setOpen(false);
               }
             }}
+            onFail={onFail}
+            onExpire={onExpire}
           />
           {isLoading && (
             <View style={styles.loadingContainer}>
