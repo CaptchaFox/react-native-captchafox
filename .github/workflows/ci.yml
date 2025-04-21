@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches:
+    branches-ignore:
       - main
   pull_request:
     branches:
@@ -9,6 +9,8 @@ on:
   merge_group:
     types:
       - checks_requested
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   lint:
