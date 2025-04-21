@@ -7,21 +7,18 @@ import {
 } from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
+  Modal,
   SafeAreaView,
   StyleSheet,
   View,
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
-import Modal from 'react-native-modal';
 import {
   CaptchaFox,
   type CaptchaFoxProps,
   type CaptchaFoxRefAttributes,
 } from './CaptchaFox';
-
-const { width, height } = Dimensions.get('window');
 
 export type CaptchaFoxModalRefAttributes = {
   show: () => void;
@@ -40,6 +37,8 @@ export type CaptchaFoxModalProps = Omit<
   footerComponent?: ReactNode;
   /** Custom styles for the Modal. */
   modalStyle?: StyleProp<ViewStyle>;
+  /** Color of the modal backdrop. */
+  backdropColor?: string;
 };
 
 export const CaptchaFoxModal = forwardRef<
@@ -58,6 +57,7 @@ export const CaptchaFoxModal = forwardRef<
       headerComponent,
       footerComponent,
       modalStyle,
+      backdropColor = 'rgba(0,0,0,0.6)',
       onVerify,
       onError,
       onExpire,
@@ -79,35 +79,31 @@ export const CaptchaFoxModal = forwardRef<
         setOpen(true);
       },
       hide: () => {
-        setLoading(false);
-        setOpen(false);
+        dismissModal();
       },
     }));
 
+    const dismissModal = () => {
+      onClose?.();
+      setLoading(false);
+      setOpen(false);
+    };
+
     return (
       <Modal
-        useNativeDriver
-        useNativeDriverForBackdrop
-        hideModalContentWhileAnimating
-        deviceHeight={height}
-        deviceWidth={width}
+        transparent
+        animationType="fade"
+        visible={isOpen}
         style={[styles.modal, modalStyle]}
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        onBackdropPress={() => {
-          setOpen(false);
-        }}
-        onBackButtonPress={() => setOpen(false)}
-        isVisible={isOpen}
-        backdropTransitionOutTiming={1}
-        hasBackdrop
-        coverScreen
+        onRequestClose={dismissModal}
       >
-        <SafeAreaView style={styles.wrapper}>
+        <SafeAreaView
+          style={[styles.wrapper, { backgroundColor: backdropColor }]}
+        >
           {headerComponent}
           <CaptchaFox
             ref={captchaRef}
-            containerStyle={styles.webView}
+            containerStyle={[styles.webView, { opacity: isLoading ? 0 : 1 }]}
             siteKey={siteKey}
             mode={mode}
             theme={theme}
@@ -170,7 +166,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     overflow: 'hidden',
-    pointerEvents: 'box-none',
   },
   loadingContainer: {
     position: 'absolute',
@@ -180,5 +175,6 @@ const styles = StyleSheet.create({
     right: 0,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 100,
   },
 });
