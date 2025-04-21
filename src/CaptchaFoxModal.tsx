@@ -17,10 +17,10 @@ import {
 import {
   CaptchaFox,
   type CaptchaFoxProps,
-  type CaptchaFoxRefAttributes,
+  type CaptchaFoxRef,
 } from './CaptchaFox';
 
-export type CaptchaFoxModalRefAttributes = {
+export type CaptchaFoxModalRef = {
   show: () => void;
   hide: () => void;
 };
@@ -42,7 +42,7 @@ export type CaptchaFoxModalProps = Omit<
 };
 
 export const CaptchaFoxModal = forwardRef<
-  CaptchaFoxModalRefAttributes,
+  CaptchaFoxModalRef,
   CaptchaFoxModalProps
 >(
   (
@@ -69,7 +69,7 @@ export const CaptchaFoxModal = forwardRef<
   ) => {
     const [isOpen, setOpen] = useState(false);
     const [isLoading, setLoading] = useState(false);
-    const captchaRef = useRef<CaptchaFoxRefAttributes>(null);
+    const captchaRef = useRef<CaptchaFoxRef>(null);
 
     const isHiddenMode = mode === 'hidden';
 

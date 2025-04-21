@@ -19,7 +19,7 @@ export type CaptchaFoxProps = Omit<WidgetOptions, 'i18n' | 'sitekey'> & {
   onChallengeOpen?: () => void;
 };
 
-export type CaptchaFoxRefAttributes = {
+export type CaptchaFoxRef = {
   /** Returns captcha token after successful verification. */
   getToken: () => Promise<string | null>;
   /** Resets the captcha widget. */
@@ -34,7 +34,7 @@ type CaptchaFoxMessage = {
   error?: string;
 };
 
-export const CaptchaFox = forwardRef<CaptchaFoxRefAttributes, CaptchaFoxProps>(
+export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
   (
     {
       siteKey,
