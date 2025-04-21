@@ -8,7 +8,7 @@ export type CaptchaFoxProps = Omit<WidgetOptions, 'i18n' | 'sitekey'> & {
   /** The sitekey for the widget. */
   siteKey: string;
   /** The URL that is used for the WebView. Must contain the domain set up in the captcha config. */
-  baseUrl?: string;
+  baseUrl: string;
   /** Custom styles for the WebView. */
   style?: StyleProp<ViewStyle>;
   /** Custom styles for the WebView container. */
@@ -41,7 +41,7 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
       mode,
       lang,
       theme,
-      baseUrl = 'https://example.com',
+      baseUrl,
       containerStyle,
       style,
       onVerify,

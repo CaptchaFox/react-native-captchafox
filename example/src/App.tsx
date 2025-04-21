@@ -17,6 +17,7 @@ export default function App() {
       />
       <CaptchaFoxModal
         ref={confirmRef}
+        baseUrl="https://example.com"
         mode="hidden"
         siteKey="sk_11111111000000001111111100000000"
         onVerify={(token) => {
