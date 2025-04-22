@@ -103,6 +103,7 @@ export const CaptchaFoxModal = forwardRef<
           {headerComponent}
           <CaptchaFox
             ref={captchaRef}
+            // eslint-disable-next-line react-native/no-inline-styles
             containerStyle={[styles.webView, { opacity: isLoading ? 0 : 1 }]}
             siteKey={siteKey}
             mode={mode}
@@ -123,7 +124,7 @@ export const CaptchaFoxModal = forwardRef<
               onLoad?.();
 
               if (isHiddenMode) {
-                captchaRef.current?.startExecute();
+                captchaRef.current?.execute();
               } else {
                 setLoading(false);
               }

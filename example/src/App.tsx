@@ -20,9 +20,9 @@ export default function App() {
         baseUrl="https://example.com"
         mode="hidden"
         siteKey="sk_11111111000000001111111100000000"
-        onVerify={(token) => {
-          console.log('Verified:', token);
-          setToken(token);
+        onVerify={(captchaToken: string) => {
+          console.log('Verified:', captchaToken);
+          setToken(captchaToken);
         }}
         onError={(error) => console.error('Error:', error)}
         headerComponent={

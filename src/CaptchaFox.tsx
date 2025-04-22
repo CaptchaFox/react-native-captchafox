@@ -21,11 +21,9 @@ export type CaptchaFoxProps = Omit<WidgetOptions, 'i18n' | 'sitekey'> & {
 
 export type CaptchaFoxRef = {
   /** Returns captcha token after successful verification. */
-  getToken: () => Promise<string | null>;
+  execute: () => Promise<string | null>;
   /** Resets the captcha widget. */
   reset: () => void;
-  /** (internal) Starts the execute process without awaiting the response. */
-  startExecute: () => void;
 };
 
 type CaptchaFoxMessage = {
@@ -77,19 +75,13 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
         `;
         webViewRef.current?.injectJavaScript(jsToInject);
       },
-      getToken: () => {
+      execute: () => {
         return new Promise((resolve, reject) => {
           tokenPromiseRef.current = { resolve, reject };
           const jsToInject = `
             (function executeCaptcha() {
               if (window.captchafox) {
                 window.captchafox.execute()
-                  .then(token => {
-                    window.ReactNativeWebView.postMessage(JSON.stringify({
-                      type: 'VERIFY',
-                      token: token
-                    }));
-                  })
                   .catch(error => {
                     window.ReactNativeWebView.postMessage(JSON.stringify({
                       type: 'ERROR',
@@ -106,27 +98,6 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
           `;
           webViewRef.current?.injectJavaScript(jsToInject);
         });
-      },
-      startExecute: () => {
-        const jsToInject = `
-          (function executeCaptcha() {
-            if (window.captchafox) {
-              window.captchafox.execute('${siteKey}')
-                .catch(error => {
-                  window.ReactNativeWebView.postMessage(JSON.stringify({
-                    type: 'ERROR',
-                    error: error || 'CaptchaFox execution failed'
-                  }));
-                });
-            } else {
-              window.ReactNativeWebView.postMessage(JSON.stringify({
-                type: 'ERROR',
-                error: 'CaptchaFox not ready'
-              }));
-            }
-          })();
-        `;
-        webViewRef.current?.injectJavaScript(jsToInject);
       },
     }));
 
