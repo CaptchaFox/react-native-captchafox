@@ -1,5 +1,11 @@
 # @captchafox/react-native
 
+## 1.1.0
+
+### Minor Changes
+
+- b2a6cb4: feat: update safe area dependencies
+
 ## 1.0.1
 
 ### Patch Changes
