@@ -3,38 +3,41 @@ import {
   type CaptchaFoxModalRef,
 } from '@captchafox/react-native';
 import { useRef, useState } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
   const [token, setToken] = useState<string>();
   const confirmRef = useRef<CaptchaFoxModalRef>(null);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Button
-        title="Start verification"
-        onPress={() => confirmRef?.current?.show()}
-      />
-      <CaptchaFoxModal
-        ref={confirmRef}
-        baseUrl="https://example.com"
-        mode="hidden"
-        siteKey="sk_11111111000000001111111100000000"
-        onVerify={(captchaToken: string) => {
-          console.log('Verified:', captchaToken);
-          setToken(captchaToken);
-        }}
-        onError={(error) => console.error('Error:', error)}
-        headerComponent={
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>
-              Complete Verification to continue
-            </Text>
-          </View>
-        }
-      />
-      {token && <Text style={styles.code}>Token: {token}</Text>}
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <Button
+          title="Start verification"
+          onPress={() => confirmRef?.current?.show()}
+        />
+        <CaptchaFoxModal
+          ref={confirmRef}
+          baseUrl="https://example.com"
+          mode="hidden"
+          siteKey="sk_Z6ZeYRzFztPkGpay55gfH7pwnM2iG"
+          onVerify={(captchaToken: string) => {
+            console.log('Verified:', captchaToken);
+            setToken(captchaToken);
+          }}
+          onError={(error) => console.error('Error:', error)}
+          headerComponent={
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>
+                Complete Verification to continue
+              </Text>
+            </View>
+          }
+        />
+        {token && <Text style={styles.code}>Token: {token}</Text>}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

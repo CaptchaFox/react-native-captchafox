@@ -8,12 +8,12 @@ import {
 import {
   ActivityIndicator,
   Modal,
-  SafeAreaView,
   StyleSheet,
   View,
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   CaptchaFox,
   type CaptchaFoxProps,
