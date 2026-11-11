@@ -52,7 +52,9 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
     },
     ref
   ) => {
-    const webViewRef = React.useRef<WebView>(null);
+    // react-native-webview 14 defaults the WebView generic to `undefined`,
+    // which collapses its props to `never`; pass an explicit type argument.
+    const webViewRef = React.useRef<WebView<object>>(null);
     const tokenPromiseRef = React.useRef<{
       resolve: (value: string | null) => void;
       reject: (reason?: any) => void;
@@ -112,12 +114,14 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
 
             onVerify?.(data.token);
             tokenPromiseRef.current?.resolve(data.token);
+            tokenPromiseRef.current = null;
             break;
           }
           case 'ERROR': {
             const errorMessage = data.error || 'CaptchaFox error';
             onError?.(errorMessage);
             tokenPromiseRef.current?.reject(new Error(errorMessage));
+            tokenPromiseRef.current = null;
             break;
           }
           case 'LOAD': {
@@ -145,7 +149,6 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
         const errorMessage = 'Failed to parse CaptchaFox response';
         onError?.(errorMessage);
         tokenPromiseRef.current?.reject(error);
-      } finally {
         tokenPromiseRef.current = null;
       }
     };

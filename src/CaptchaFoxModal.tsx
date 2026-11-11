@@ -124,7 +124,8 @@ export const CaptchaFoxModal = forwardRef<
               onLoad?.();
 
               if (isHiddenMode) {
-                captchaRef.current?.execute();
+                // Errors are surfaced via onError; avoid an unhandled rejection.
+                captchaRef.current?.execute().catch(() => {});
               } else {
                 setLoading(false);
               }
