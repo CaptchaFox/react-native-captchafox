@@ -114,12 +114,14 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
 
             onVerify?.(data.token);
             tokenPromiseRef.current?.resolve(data.token);
+            tokenPromiseRef.current = null;
             break;
           }
           case 'ERROR': {
             const errorMessage = data.error || 'CaptchaFox error';
             onError?.(errorMessage);
             tokenPromiseRef.current?.reject(new Error(errorMessage));
+            tokenPromiseRef.current = null;
             break;
           }
           case 'LOAD': {
@@ -147,7 +149,6 @@ export const CaptchaFox = forwardRef<CaptchaFoxRef, CaptchaFoxProps>(
         const errorMessage = 'Failed to parse CaptchaFox response';
         onError?.(errorMessage);
         tokenPromiseRef.current?.reject(error);
-      } finally {
         tokenPromiseRef.current = null;
       }
     };

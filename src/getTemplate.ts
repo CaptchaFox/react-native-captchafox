@@ -6,6 +6,13 @@ export const getTemplate = ({
   theme,
   sitekey,
 }: Pick<WidgetOptions, 'mode' | 'theme' | 'lang' | 'sitekey'>) => {
+  // Serialise as JSON (drops undefined fields) and escape `<` so a value
+  // containing `</script>` cannot terminate the inline script tag.
+  const options = JSON.stringify({ sitekey, mode, theme, lang }).replace(
+    /</g,
+    '\\u003c'
+  );
+
   return `
       <!DOCTYPE html>
       <html>
@@ -55,7 +62,7 @@ export const getTemplate = ({
 
             function onExpire() {
               window.ReactNativeWebView.postMessage(JSON.stringify({
-                type: 'EXPIRED',
+                type: 'EXPIRE',
               }));
             }
 
@@ -68,10 +75,7 @@ export const getTemplate = ({
             async function onLoad() {
               try {
                 await window.captchafox.render('.captchafox', {
-                  sitekey: "${sitekey}",
-                  mode: "${mode}",
-                  theme: "${theme}",
-                  lang: "${lang}",
+                  ...${options},
                   onFail,
                   onClose,
                   onExpire,
