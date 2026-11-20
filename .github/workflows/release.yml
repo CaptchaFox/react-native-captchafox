@@ -22,14 +22,16 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      # Trusted publishing (OIDC) needs npm 11.5.1 or later; Node 20 ships npm 10.
+      - name: Update npm
+        run: npm install -g npm@11.21.2
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2.1.2
         with:
-          publish: yarn run release
-          commit: "chore: version packages"
-          title: "chore: version packages"
+          publish-script: yarn run release
+          commit-message: "chore: version packages"
+          pr-title: "chore: version packages"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
