@@ -28,10 +28,11 @@ jobs:
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v2.1.2
+        # v1.7.0 and later publish through OIDC when NPM_TOKEN is not set; v2 needs Changesets CLI v3.
+        uses: changesets/action@v1.9.0
         with:
-          publish-script: yarn run release
-          commit-message: "chore: version packages"
-          pr-title: "chore: version packages"
+          publish: yarn run release
+          commit: "chore: version packages"
+          title: "chore: version packages"
         env:
           NPM_CONFIG_PROVENANCE: 'true'
